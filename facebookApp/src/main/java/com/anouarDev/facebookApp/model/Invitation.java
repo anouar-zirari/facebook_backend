@@ -24,8 +24,8 @@ public class Invitation {
     private Status status;
     @ManyToOne
     @JoinColumn(name = "receiver_id")
-    private Users receiverId;
+    private Users receiver;
     @ManyToOne
     @JoinColumn(name = "sender_id")
-    private Users senderId;
+    private Users sender;
 }
