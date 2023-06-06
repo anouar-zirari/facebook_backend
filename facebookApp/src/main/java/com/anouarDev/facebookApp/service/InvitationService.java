@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,19 +24,18 @@ public class InvitationService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void saveInvitationAndNotification(Users sender, Users receiver) {
-        Invitation invitation = Invitation.builder()
-                .sender(sender)
-                .receiver(receiver)
-                .status(Status.WAITING)
-                .build();
+    public void saveInvitationAndNotification(Invitation invitation) {
+        invitation.setStatus(Status.WAITING);
         this.invitationRepository.save(invitation);
 
         Notification notification = Notification.builder()
-                .senderId(sender.getId())
-                .receiverId(receiver.getId())
-                .userFirstName(sender.getFirstName())
-                .userLastName(sender.getLastName())
+                .senderId(invitation.getSender().getId())
+                .receiverId(invitation.getReceiver().getId())
+                .senderFirstName(invitation.getSender().getFirstName())
+                .senderLastName(invitation.getSender().getLastName())
+                .receiverFirstName(invitation.getReceiver().getFirstName())
+                .receiverLastName(invitation.getReceiver().getLastName())
+                .date(new Date())
                 .build();
         this.notificationRepository.save(notification);
     }
@@ -54,7 +55,6 @@ public class InvitationService {
             this.userRepository.save(sender);
 
         }
-
     }
     
 }

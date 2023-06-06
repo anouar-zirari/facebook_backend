@@ -4,6 +4,9 @@ package com.anouarDev.facebookApp.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -26,7 +29,10 @@ public class Notification {
     private Long id;
     private Long senderId;
     private Long receiverId;
-    private String userFirstName;
-    private String userLastName;
+    private String senderFirstName;
+    private String senderLastName;
+    private String receiverFirstName;
+    private String receiverLastName;
+    private Date date;
 
 }

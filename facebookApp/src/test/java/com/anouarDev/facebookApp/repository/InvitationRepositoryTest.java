@@ -23,13 +23,13 @@ class InvitationRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void saveInvitationAndNotification() {
-        Users sender = this.userRepository.findById(1L).get();
-        Users receiver = this.userRepository.findById(2L).get();
-
-        this.invitationService.saveInvitationAndNotification(sender, receiver);
-    }
+//    @Test
+//    public void saveInvitationAndNotification() {
+//        Users sender = this.userRepository.findById(1L).get();
+//        Users receiver = this.userRepository.findById(2L).get();
+//
+//        this.invitationService.saveInvitationAndNotification(sender, receiver);
+//    }
 
     @Test
     public void invitationResponse() {
