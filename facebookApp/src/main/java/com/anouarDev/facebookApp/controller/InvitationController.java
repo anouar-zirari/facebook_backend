@@ -21,5 +21,12 @@ public class InvitationController {
         this.invitationService.saveInvitationAndNotification(invitation);
     }
 
+    @PostMapping("/friendshipResponse")
+    public void friendshipResponse(@RequestParam("senderId") Long senderId,
+                                   @RequestParam("receiverId") Long receiverId,
+                                   @RequestParam("response") boolean response) {
+        this.invitationService.InvitationResponse(senderId, receiverId, response);
+    }
+
 
 }

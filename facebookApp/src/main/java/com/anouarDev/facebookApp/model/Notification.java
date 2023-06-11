@@ -15,7 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Notification {
-
     @Id
     @SequenceGenerator(
             name = "notification_sequence",

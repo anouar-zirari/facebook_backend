@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,9 +42,10 @@ public class InvitationService {
     }
 
     @Transactional
-    public void InvitationResponse(Invitation invitation){
-        if (invitation.getStatus().equals(Status.ACCEPT)){
-
+    public void InvitationResponse(Long senderId, Long receiverId, boolean response){
+        Invitation invitation = this.invitationRepository.findBySenderIdAndReceiverId(senderId, receiverId);
+        if (response == true){
+            invitation.setStatus(Status.ACCEPT);
             this.invitationRepository.save(invitation);
 
             Users receiver = this.userRepository.findById(invitation.getSender().getId()).get();
@@ -54,6 +56,9 @@ public class InvitationService {
             this.userRepository.save(receiver);
             this.userRepository.save(sender);
 
+        } else {
+            invitation.setStatus(Status.REFUSE);
+            this.invitationRepository.save(invitation);
         }
     }
     

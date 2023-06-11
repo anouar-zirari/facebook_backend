@@ -47,5 +47,10 @@ public class UsersService {
         return this.userRepository.findAllAppUsersDto();
     }
 
+//    public List<Users> findAllFriends() {
+//        return this.userRepository.findAllFriends();
+//    }
+
+
 
 }

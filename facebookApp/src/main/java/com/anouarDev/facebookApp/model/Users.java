@@ -45,10 +45,13 @@ public class Users {
     @JoinTable(name = "friends")
     private List<Users> friends;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
+
     public void addFriends(Users user){
         if (friends == null) friends = new ArrayList<>();
         friends.add(user);
-
     }
 
 }

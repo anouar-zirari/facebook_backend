@@ -33,9 +33,7 @@ class InvitationRepositoryTest {
 
     @Test
     public void invitationResponse() {
-        Invitation invitation = this.invitationRepository.findById(1L).get();
-        invitation.setStatus(Status.ACCEPT);
-        this.invitationService.InvitationResponse(invitation);
+        this.invitationService.InvitationResponse(4L, 1L, false);
     }
 
 }

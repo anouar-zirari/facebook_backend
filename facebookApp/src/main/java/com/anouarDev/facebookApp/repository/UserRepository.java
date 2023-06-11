@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             "new com.anouarDev.facebookApp.dto.AppUsersDto(u.id, u.firstName, u.lastName)" +
             "FROM Users u")
     List<AppUsersDto> findAllAppUsersDto();
+
+
 }
