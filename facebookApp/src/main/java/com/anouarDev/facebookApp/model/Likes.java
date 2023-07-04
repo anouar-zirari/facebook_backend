@@ -3,32 +3,28 @@ package com.anouarDev.facebookApp.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-import java.util.List;
-
-
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Post {
+public class Likes {
     @Id
     @SequenceGenerator(
-            name = "post_sequence",
-            sequenceName = "post_sequence",
+            name = "like_sequence",
+            sequenceName = "like_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "post_sequence"
+            generator = "like_sequence"
     )
     private Long id;
-    private String content;
-    private Date date;
-
-    @ManyToOne
+    private Long likes;
+    @OneToOne
     private Users user;
-
+    @ManyToOne
+    private Post post;
 
 }

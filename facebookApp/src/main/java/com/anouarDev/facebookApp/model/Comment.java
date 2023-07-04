@@ -1,10 +1,11 @@
 package com.anouarDev.facebookApp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,4 +19,8 @@ public class Comment {
     private String comment;
     @ManyToOne
     private Post post;
+    @ManyToOne
+    private Users user;
+
+
 }

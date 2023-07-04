@@ -26,19 +26,28 @@ public class InvitationService {
 
     @Transactional
     public void saveInvitationAndNotification(Invitation invitation) {
-        invitation.setStatus(Status.WAITING);
-        this.invitationRepository.save(invitation);
+        Invitation invitationExist = this.invitationRepository.
+                findBySenderIdAndReceiverId(
+                        invitation.getSender().getId(),
+                        invitation.getReceiver().getId()
+                );
+        if (invitationExist == null) {
+            invitation.setStatus(Status.WAITING);
+            this.invitationRepository.save(invitation);
 
-        Notification notification = Notification.builder()
-                .senderId(invitation.getSender().getId())
-                .receiverId(invitation.getReceiver().getId())
-                .senderFirstName(invitation.getSender().getFirstName())
-                .senderLastName(invitation.getSender().getLastName())
-                .receiverFirstName(invitation.getReceiver().getFirstName())
-                .receiverLastName(invitation.getReceiver().getLastName())
-                .date(new Date())
-                .build();
-        this.notificationRepository.save(notification);
+            Notification notification = Notification.builder()
+                    .senderId(invitation.getSender().getId())
+                    .receiverId(invitation.getReceiver().getId())
+                    .senderFirstName(invitation.getSender().getFirstName())
+                    .senderLastName(invitation.getSender().getLastName())
+                    .receiverFirstName(invitation.getReceiver().getFirstName())
+                    .receiverLastName(invitation.getReceiver().getLastName())
+                    .date(new Date())
+                    .build();
+            this.notificationRepository.save(notification);
+        } else {
+            throw new IllegalStateException("The invitation already sent");
+        }
     }
 
     @Transactional
@@ -61,5 +70,16 @@ public class InvitationService {
             this.invitationRepository.save(invitation);
         }
     }
-    
+
+    public List<Invitation> findInvitationBySender(Long senderId) {
+        return this.invitationRepository.findBySenderId(senderId);
+    }
+
+    public List<Invitation> findInvitationByReceiver(Long receiverId) {
+        return this.invitationRepository.findByReceiverId(receiverId);
+    }
+
+    public Invitation findInvitationBySenderAndReceiver(Long senderId, Long receiverId) {
+        return this.invitationRepository.findBySenderIdAndReceiverId(senderId, receiverId);
+    }
 }

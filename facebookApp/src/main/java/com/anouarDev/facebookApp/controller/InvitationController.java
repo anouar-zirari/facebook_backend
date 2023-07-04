@@ -28,5 +28,22 @@ public class InvitationController {
         this.invitationService.InvitationResponse(senderId, receiverId, response);
     }
 
+    @GetMapping("/find-inv-by-sender/{senderId}")
+    public List<Invitation> findInvitationBySender(@PathVariable("senderId") Long senderId) {
+        return this.invitationService.findInvitationBySender(senderId);
+    }
+
+    @GetMapping("/find-inv-by-receiver/{receiverId}")
+    public List<Invitation> findInvitationByReceiver(@PathVariable("receiverId") Long receiverId) {
+        return this.invitationService.findInvitationByReceiver(receiverId);
+    }
+
+    @PostMapping("/find-inv-by-sender-receiver")
+    public Invitation findInvitationBySenderAndReceiver(
+            @RequestParam("senderId") Long senderId,
+            @RequestParam("receiverId") Long receiverId) {
+        return this.invitationService.findInvitationBySenderAndReceiver(senderId, receiverId);
+    }
+
 
 }

@@ -1,7 +1,11 @@
 package com.anouarDev.facebookApp.service;
 
+import com.anouarDev.facebookApp.model.Comment;
+import com.anouarDev.facebookApp.model.Likes;
 import com.anouarDev.facebookApp.model.Post;
 import com.anouarDev.facebookApp.model.Users;
+import com.anouarDev.facebookApp.repository.CommentRepository;
+import com.anouarDev.facebookApp.repository.LikeRepository;
 import com.anouarDev.facebookApp.repository.PostRepository;
 import com.anouarDev.facebookApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +24,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final Algorithm algorithm;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
 
     public void savePost(Post post) {
@@ -40,12 +47,43 @@ public class PostService {
                         posts.add(post);
                     });
                 }
-                );
+        );
         user.get().getPosts().forEach(post -> {
             posts.add(post);
         });
-        algorithm.bubbleSortDescending(posts);
+        algorithm.bubbleSortDescendingPosts(posts);
         return posts;
     }
 
+    public Post savePostOptions(Long userId, Long postId, String comment, Long like) {
+        Post post = this.postRepository.findById(postId).get();
+        Users user = this.userRepository.findById(userId).get();
+        if (post != null) {
+            if (comment != null && like == 0L) {
+                Comment newComment = Comment.builder()
+                        .comment(comment)
+                        .post(post)
+                        .user(user)
+                        .build();
+
+                this.commentRepository.save(newComment);
+            } else {
+                Likes likes = this.likeRepository.findByPostAndUser(post, user);
+                if (likes == null){
+                        likes = Likes.builder()
+                                .likes(1L)
+                                .post(post)
+                                .user(user)
+                                .build();
+                }
+                else {
+                    if (likes.getLikes() == 1)
+                        likes.setLikes(likes.getLikes() - 1);
+                    else likes.setLikes(likes.getLikes() + 1);
+                }
+                this.likeRepository.save(likes);
+            }
+        }
+        return post;
+    }
 }

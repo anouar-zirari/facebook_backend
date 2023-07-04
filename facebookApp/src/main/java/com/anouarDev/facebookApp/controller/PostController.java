@@ -30,5 +30,15 @@ public class PostController {
         return this.postService.community(users);
     }
 
+    //comment or like
+    @PostMapping("/post-options")
+    public Post savePostOption(
+            @RequestParam("userId") Long userId,
+            @RequestParam("postId") Long postId,
+            @RequestParam(value = "comment", required = false) String comment,
+            @RequestParam("like") Long like) {
+        return this.postService.savePostOptions(userId ,postId, comment, like);
+    }
+
 
 }

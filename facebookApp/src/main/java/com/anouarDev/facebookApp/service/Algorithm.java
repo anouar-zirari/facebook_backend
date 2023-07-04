@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class Algorithm {
-    public void bubbleSortDescending(List<Post> posts) {
+    public void bubbleSortDescendingPosts(List<Post> posts) {
         int n = posts.size();
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {

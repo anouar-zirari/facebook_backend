@@ -48,6 +48,7 @@ public class Users {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
+    
 
     public void addFriends(Users user){
         if (friends == null) friends = new ArrayList<>();
