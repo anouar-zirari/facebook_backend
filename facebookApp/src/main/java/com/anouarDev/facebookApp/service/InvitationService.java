@@ -72,7 +72,12 @@ public class InvitationService {
     }
 
     public List<Invitation> findInvitationBySender(Long senderId) {
-        return this.invitationRepository.findBySenderId(senderId);
+         List<Invitation> invitationsBySender = this.invitationRepository.findBySenderId(senderId);
+         List<Invitation> invitationsByReceiver = this.findInvitationByReceiver(senderId);
+         if (invitationsBySender.size() != 0)
+             return invitationsBySender;
+         else
+             return invitationsByReceiver;
     }
 
     public List<Invitation> findInvitationByReceiver(Long receiverId) {

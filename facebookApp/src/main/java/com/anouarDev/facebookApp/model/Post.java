@@ -27,7 +27,7 @@ public class Post {
     private String content;
     private Date date;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Users user;
 
 

@@ -10,6 +10,10 @@ import java.util.List;
 
 @Repository
 public interface InvitationRepository extends JpaRepository<Invitation, Long> {
+
+    @Query("SELECT inv FROM Invitation inv WHERE " +
+            "(inv.sender.id =:senderId AND inv.receiver.id =: receiverId) OR " +
+            "(inv.sender.id =:receiverId AND inv.receiver.id =:senderId)")
     Invitation findBySenderIdAndReceiverId(Long senderId, Long receiverId);
 
     @Query("SELECT inv FROM Invitation inv WHERE inv.sender.id = :senderId")

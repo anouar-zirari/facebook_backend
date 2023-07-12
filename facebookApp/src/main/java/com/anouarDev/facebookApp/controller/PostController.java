@@ -5,7 +5,9 @@ import com.anouarDev.facebookApp.model.Users;
 import com.anouarDev.facebookApp.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,8 +18,11 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/save")
-    public void savePost(@RequestBody Post post) {
-        this.postService.savePost(post);
+    public void savePost(
+            @RequestParam("post") String post,
+            @RequestParam("file")MultipartFile file
+    ) throws IOException {
+        this.postService.savePost(post, file);
     }
 
     @PostMapping("/find-user-posts")

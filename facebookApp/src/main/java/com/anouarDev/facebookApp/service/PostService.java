@@ -8,9 +8,12 @@ import com.anouarDev.facebookApp.repository.CommentRepository;
 import com.anouarDev.facebookApp.repository.LikeRepository;
 import com.anouarDev.facebookApp.repository.PostRepository;
 import com.anouarDev.facebookApp.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +29,17 @@ public class PostService {
     private final Algorithm algorithm;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
+    private final ObjectMapper objectMapper;
+    private final ImageService imageService;
 
 
-    public void savePost(Post post) {
+    public void savePost(String postData, MultipartFile file) throws IOException {
+        Post post = objectMapper.readValue(postData, Post.class);
+        Users user = this.userRepository.findById(post.getUser().getId()).get();
+        post.setUser(user);
         post.setDate(new Date());
-        this.postRepository.save(post);
+        Post savedPost = this.postRepository.save(post);
+        this.imageService.uploadImageToFileSystem(file, savedPost);
     }
 
     public List<Post> FindPostsByUser(Users user) {
