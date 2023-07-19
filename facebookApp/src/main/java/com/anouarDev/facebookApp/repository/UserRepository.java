@@ -7,15 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
-    Users findByEmail(String email);
+    Optional<Users> findByEmail(String email);
 
     @Query("SELECT " +
             "new com.anouarDev.facebookApp.dto.AppUsersDto(u.id, u.firstName, u.lastName)" +
             "FROM Users u")
     List<AppUsersDto> findAllAppUsersDto();
-
 
 }

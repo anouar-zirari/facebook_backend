@@ -30,7 +30,7 @@ public class UsersService {
     }
 
     public Users login(Users user) throws AccountNotFoundException {
-        Users userInDb = this.userRepository.findByEmail(user.getEmail());
+        Users userInDb = this.userRepository.findByEmail(user.getEmail()).get();
         String userFirstname = userInDb.getFirstName();
         System.out.println("this the the user" + userFirstname);
         if (userInDb.getPassword().equals(user.getPassword()))
