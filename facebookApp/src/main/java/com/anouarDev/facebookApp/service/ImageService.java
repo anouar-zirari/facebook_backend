@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,7 +36,6 @@ public class ImageService {
 
         file.transferTo(new File(filePath));
 
-
         if (fileData != null)
             return "file uploaded successfully" + filePath;
         else
@@ -43,9 +44,21 @@ public class ImageService {
 
     public byte[] downloadImageFileSystem(Long postId) throws IOException {
         Optional<Image> fileData = imageRepository.findByPostId(postId);
-        String filePath=fileData.get().getFilePath();
+        String filePath = fileData.get().getFilePath();
         byte[] images = Files.readAllBytes(new File(filePath).toPath());
         return images;
+    }
+
+    public List<byte[]> downloadImageFileSystemByUserId(Long userId) throws IOException {
+        List<Image> fileData = imageRepository.findImagesByUserId(userId);
+        List<byte[]> imageList = new ArrayList<>();
+        for (Image image: fileData) {
+
+            String filePath = image.getFilePath();
+            byte[] images = Files.readAllBytes(new File(filePath).toPath());
+            imageList.add(images);
+        }
+        return imageList;
     }
 
 }

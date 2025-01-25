@@ -33,13 +33,20 @@ public class PostService {
     private final ImageService imageService;
 
 
-    public void savePost(String postData, MultipartFile file) throws IOException {
+    public void savePostWithImage(String postData, MultipartFile file) throws IOException {
         Post post = objectMapper.readValue(postData, Post.class);
         Users user = this.userRepository.findById(post.getUser().getId()).get();
         post.setUser(user);
         post.setDate(new Date());
         Post savedPost = this.postRepository.save(post);
         this.imageService.uploadImageToFileSystem(file, savedPost);
+    }
+
+    public void savePost(Post post) {
+        Users user =  this.userRepository.findById(post.getUser().getId()).get();
+        post.setDate(new Date());
+        post.setUser(user);
+        this.postRepository.save(post);
     }
 
     public List<Post> FindPostsByUser(Users user) {

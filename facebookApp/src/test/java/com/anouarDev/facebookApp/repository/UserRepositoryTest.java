@@ -54,8 +54,6 @@ class UserRepositoryTest {
                 .gender(Gender.MALE)
                 .build();
         this.userService.saveUser(user4);
-
-
     }
 
 }

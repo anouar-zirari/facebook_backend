@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +32,18 @@ public class ImageController {
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(imageData);
+    }
+    @GetMapping("user-images/{userId}")
+    public ResponseEntity<List<byte[]>> downloadImages(@PathVariable("userId") Long userId) throws IOException {
+        try {
+            List<byte[]> images = imageService.downloadImageFileSystemByUserId(userId);
+            return ResponseEntity.status(HttpStatus.OK)
+//                    .contentType(MediaType.valueOf("image/png"))
+                    .body(images);
+        } catch (IOException e) {
+            // Handle exceptions, e.g., return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }
